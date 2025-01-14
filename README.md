@@ -9,6 +9,7 @@ Clone de Discord réalisé avec :
 Ce projet est réalisé à des fins éducatives et professionnelles.
 
 
+
 ---------* English version *---------
 
 # Piscord
@@ -18,5 +19,5 @@ A Discord clone built with:
 - **Database** : MongoDB
 - **Real-time** : Socket.IO + Redis
 - **Hosting** : Infomaniak
-- 
+
 This project is developed for educational and professional purposes.
