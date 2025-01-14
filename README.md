@@ -11,7 +11,7 @@ Ce projet est réalisé à des fins éducatives et professionnelles.
 
 ---------* English version *---------
 
-#Piscord
+# Piscord
 A Discord clone built with:
 - **Front-end** : Angular
 - **Back-end** : NestJS
