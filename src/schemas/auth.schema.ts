@@ -7,13 +7,13 @@ export type AuthDocument = HydratedDocument<Auth>;
 
 @Schema()
 export class Auth {
-    @Prop({ type: String, required: true })
+    @Prop({ type: String, required: true, unique: true })
     email: string;
     
     @Prop({ type: String, required: true })
     password: string;
 
-    @Prop({ type: Boolean, required: true })
+    @Prop({ type: Boolean, default: false })
     isEmailVerified: boolean;
 
     @Prop({ type: Date, required: true, default: Date.now })
