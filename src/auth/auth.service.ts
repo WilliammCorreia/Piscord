@@ -1,13 +1,17 @@
 import { Model } from "mongoose";
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
+import { JwtService } from "@nestjs/jwt";
 import { Auth } from "src/schemas/auth.schema";
 import { AuthDto } from "./dto";
 import * as argon from "argon2";
 
 @Injectable({})
 export class AuthService {
-    constructor(@InjectModel(Auth.name) private authModel: Model<Auth>) { }
+    constructor(
+        @InjectModel(Auth.name) private authModel: Model<Auth>,
+        private jwtService: JwtService
+    ) { }
 
     async signup(createAuthDto: AuthDto): Promise<Auth> {
 
@@ -21,8 +25,8 @@ export class AuthService {
         return createdAuth.save();
     }
 
-    async signin(loginAuthDto: AuthDto): Promise<Auth> {
-        const user: Auth = await this.authModel.findOne({ email: loginAuthDto.email });
+    async signin(loginAuthDto: AuthDto): Promise<{ accessToken: string }> {
+        const user = await this.authModel.findOne({ email: loginAuthDto.email });
 
         // Verify if the email address is in the database
         if (!user) {
@@ -35,7 +39,10 @@ export class AuthService {
             throw new ForbiddenException('Identifiant invalide');
         }
 
-        user.password = undefined;
-        return user;
+        const payload = { sub: user._id, username: user.email };
+
+        return {
+            accessToken: await this.jwtService.signAsync(payload),
+        };
     }
 }
