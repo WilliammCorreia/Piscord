@@ -5,17 +5,14 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-    @Prop({ type: String, required: true })
-    id: String;
-
-    @Prop({ type: String, required: true })
+    @Prop({ type: String, required: true, unique: true })
     username: string;
 
     @Prop({ type: String })
-    avatarUrl?: string;
+    avatarUrl: string;
 
-    @Prop({ type: String, required: true })
-    status: string;
+    @Prop({ type: Boolean, required: true, default: false })
+    setOffline: boolean;
 
     @Prop({ type: String })
     bio?: string;
@@ -26,11 +23,11 @@ export class User {
     @Prop({ type: Date, default: Date.now })
     updatedAt: Date;
 
-    @Prop({ type: Boolean, required: true })
-    isOnline: boolean;
+    @Prop({ type: Boolean })
+    isOnline?: boolean;
 
-    @Prop({ type: [String], required: true })
-    roles: string[];
+    @Prop({ type: String, required: true, default: "user" })
+    role: string;
 
     @Prop({ type: [String] })
     friends: string[];

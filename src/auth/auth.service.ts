@@ -26,20 +26,20 @@ export class AuthService {
     }
 
     async signin(loginAuthDto: AuthDto): Promise<{ accessToken: string }> {
-        const user = await this.authModel.findOne({ email: loginAuthDto.email });
+        const auth = await this.authModel.findOne({ email: loginAuthDto.email });
 
         // Verify if the email address is in the database
-        if (!user) {
+        if (!auth) {
             throw new ForbiddenException('Identifiant invalide');
         }
 
         // Verify if the password is correct
-        const isPasswordValid = await argon.verify(user.password, loginAuthDto.password);
+        const isPasswordValid = await argon.verify(auth.password, loginAuthDto.password);
         if (!isPasswordValid) {
             throw new ForbiddenException('Identifiant invalide');
         }
 
-        const payload = { sub: user._id, username: user.email };
+        const payload = { sub: auth._id, username: auth.email };
 
         return {
             accessToken: await this.jwtService.signAsync(payload),
