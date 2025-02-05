@@ -3,12 +3,12 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { Auth, AuthSchema } from "src/schemas/auth.schema";
 import { jwtConstants } from "./constants";
+import { User, UserSchema } from "src/schemas/user.schema";
 
 @Module({
     imports: [
-        MongooseModule.forFeature([{ name: Auth.name, schema: AuthSchema }]),
+        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
         JwtModule.register({
             global: true,
             secret: jwtConstants.secret,
