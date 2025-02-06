@@ -8,12 +8,17 @@ import { Model } from 'mongoose';
 export class UserService {
     constructor(@InjectModel(User.name) private userModel: Model<User>) { }
 
-    async createUser(dto: UserDto): Promise<User> {
-        if (await this.userModel.findOne({ username: dto.username })) {
-            throw new ForbiddenException("Pseudo déjà utilisé");
+    async updateUser(req: any, dto: UserDto): Promise<Omit<User, 'password'>> {
+        const userId = req.user.sub;
+
+        const user = await this.userModel.findOne({ _id: userId });
+        if(!user) {
+            throw new ForbiddenException('Utilisateur introuvable');
         }
 
-        const createdUser = new this.userModel(dto);
-        return createdUser.save();
+        await this.userModel.updateOne({ _id: userId}, dto);
+
+        const {password, ...result} = (await this.userModel.findById(userId)).toObject();
+        return result;
     }
 }

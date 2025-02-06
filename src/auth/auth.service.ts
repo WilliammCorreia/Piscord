@@ -47,7 +47,7 @@ export class AuthService {
             throw new ForbiddenException('Identifiant invalide');
         }
 
-        const payload = { sub: user._id, username: user.email };
+        const payload = { sub: user._id, username: user.username };
 
         return {
             accessToken: await this.jwtService.signAsync(payload),
